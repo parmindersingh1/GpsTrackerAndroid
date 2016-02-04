@@ -25,11 +25,13 @@ import in.ezzie.gps.helper.responseMessage;
  */
 public class Config {
     // server URL configuration
-    public static final String URL_REQUEST_SMS = "http://192.168.1.5/gps/request_sms.php";
-    public static final String URL_VERIFY_OTP = "http://192.168.1.5/gps/verify_otp.php";
-    public static final String URL_SEND_LOCATION = "http://192.168.1.5/gps/update_location.php";
-    public static final String URL_LOGOUT = "http://192.168.1.5/gps/logout.php";
-    public static final String URL_IMAGE_UPLOAD = "http://192.168.1.5/gps/upload_image.php";
+     public static final String BASE_URL=  "http://192.168.1.2/gps";
+//    public static final String BASE_URL=  "http://mygpstracking.esy.es";
+    public static final String URL_REQUEST_SMS = BASE_URL + "/request_sms.php";
+    public static final String URL_VERIFY_OTP = BASE_URL + "/verify_otp.php";
+    public static final String URL_SEND_LOCATION = BASE_URL + "/update_location.php";
+    public static final String URL_LOGOUT = BASE_URL + "/logout.php";
+    public static final String URL_IMAGE_UPLOAD = BASE_URL + "/upload_image.php";
 
     // SMS provider identification
     // It should match with your SMS gateway origin
@@ -64,8 +66,6 @@ public class Config {
 
 
     public static responseMessage sendData(String url, MultiValueMap<String, String> params, String TAG){
-        Log.i(TAG, "In Send Data of Config "+String.valueOf(params.get("uuid")));
-
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.set("Connection", "Close");
 

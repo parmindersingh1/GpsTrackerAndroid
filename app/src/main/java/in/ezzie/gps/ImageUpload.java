@@ -42,6 +42,7 @@ public class ImageUpload extends AppCompatActivity {
     private PrefManager pref;
     private ImageView viewImage;
     private Button btnCapture;
+    private Bitmap image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +58,11 @@ public class ImageUpload extends AppCompatActivity {
         });
 
         pref = new PrefManager(getApplicationContext());
+        String base64 = pref.getImage();
+        if(base64 != null) {
+            image = base64ToBitmap(base64);
+            viewImage.setImageBitmap(image);
+        }
     }
 
 
@@ -114,7 +120,7 @@ public class ImageUpload extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 viewImage.setImageBitmap(thumbnail);
-                 params.add("image", bitmapToBase64(thumbnail));
+                params.add("image", bitmapToBase64(thumbnail));
             } else if (requestCode == SELECT_FILE) {
                 Uri selectedImageUri = data.getData();
                 String[] projection = {MediaStore.MediaColumns.DATA};
@@ -167,6 +173,9 @@ public class ImageUpload extends AppCompatActivity {
         @Override
         protected void onPostExecute(responseMessage response) {
             super.onPostExecute(response);
+            if(!response.getError()){
+                pref.setImage(String.valueOf(this.params.get("image")));
+            }
             Toast.makeText(ImageUpload.this,response.getMessage(),Toast.LENGTH_LONG).show();
         }
 
@@ -185,11 +194,11 @@ public class ImageUpload extends AppCompatActivity {
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
-//
-//    private Bitmap base64ToBitmap(String b64) {
-//        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
-//        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-//    }
+
+    private Bitmap base64ToBitmap(String b64) {
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+    }
 
 
 

@@ -33,6 +33,7 @@ public class PrefManager {
     private static final String KEY_REG = "registration_no";
     private static final String KEY_MOBILE = "mobile";
     private static final String KEY_UUID = "uuid";
+    private static final String KEY_IMAGE = "uImage";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -65,6 +66,15 @@ public class PrefManager {
 
     public String getUUID() {
         return pref.getString(KEY_UUID, null);
+    }
+
+    public void setImage(String base64) {
+        editor.putString(KEY_IMAGE, base64);
+        editor.commit();
+    }
+
+    public String getImage() {
+        return pref.getString(KEY_IMAGE, null);
     }
 
     public void createLogin(String name, String vehicle_reg_no, String mobile, String uuid) {

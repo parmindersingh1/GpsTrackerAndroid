@@ -370,6 +370,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         @Override
         protected responseMessage doInBackground(Void... voids) {
+            Log.i(TAG,"------------Mobile is: ");
+            Log.i(TAG, String.valueOf(params.get("mobile")));
             return Config.sendData(Config.URL_LOGOUT,this.params,TAG);
         }
 
