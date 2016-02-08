@@ -204,6 +204,7 @@ public class BackgroundLocationService extends Service implements
         params.add("vehicle_id", profile.get("vehicle_reg_no"));
         params.add("event_type", Config.EVENT_TYPE);
         params.add("uuid", pref.getUUID());
+        params.add("session_id",pref.getSessionID());
         params.add("gpsTime", dateFormat.format(date));
 
         new SendLocationTask(params).execute();
@@ -218,7 +219,11 @@ public class BackgroundLocationService extends Service implements
         }
         @Override
         protected responseMessage doInBackground(Void... voids) {
-            return Config.sendData(Config.URL_SEND_LOCATION,this.params,TAG);
+            if(Config.isConnected(BackgroundLocationService.this)) {
+                return Config.sendData(Config.URL_SEND_LOCATION, this.params, TAG);
+            } else{
+                return new responseMessage("Not Connected to Network");
+            }
         }
 
         @Override

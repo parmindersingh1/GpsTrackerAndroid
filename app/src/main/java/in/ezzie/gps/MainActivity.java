@@ -99,16 +99,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 if (mRequestingLocationUpdates) {
                     // means service is on
-                    Intent intent = new Intent(MainActivity.this, BackgroundLocationService.class);
-                    unRegisterLocationReciever();
-                    stopService(intent);
-                    updateUI();
+                    stopService();
                 } else {
                     // start service
-                    Intent intent = new Intent(MainActivity.this, BackgroundLocationService.class);
-                    startService(intent);
-                    bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
-                    updateUI();
+                    if(!Config.isConnected(MainActivity.this)) {
+                        Toast.makeText(MainActivity.this,"Service Can't Started in Offline Mode",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    if(!Config.isGpsEnabled(MainActivity.this)) {
+                        Toast.makeText(MainActivity.this,"Enable Gps for Service",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    startService();
+
                 }
             }
         });
@@ -120,6 +123,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+    }
+
+    protected void startService(){
+        Intent intent = new Intent(MainActivity.this, BackgroundLocationService.class);
+        startService(intent);
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        pref.setSessionID();
+        updateUI();
+    }
+
+    protected void stopService(){
+        Intent intent = new Intent(MainActivity.this, BackgroundLocationService.class);
+        unRegisterLocationReciever();
+        stopService(intent);
+        pref.removeSessionID();
+        updateUI();
     }
 
     @Override
@@ -370,8 +389,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         @Override
         protected responseMessage doInBackground(Void... voids) {
-            Log.i(TAG,"------------Mobile is: ");
-            Log.i(TAG, String.valueOf(params.get("mobile")));
             return Config.sendData(Config.URL_LOGOUT,this.params,TAG);
         }
 

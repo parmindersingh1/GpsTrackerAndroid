@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Created by parminder on 27/1/16.
@@ -34,6 +35,7 @@ public class PrefManager {
     private static final String KEY_MOBILE = "mobile";
     private static final String KEY_UUID = "uuid";
     private static final String KEY_IMAGE = "uImage";
+    private static final String KEY_SESSION = "uImage";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -66,6 +68,19 @@ public class PrefManager {
 
     public String getUUID() {
         return pref.getString(KEY_UUID, null);
+    }
+
+    public String getSessionID() {
+        return pref.getString(KEY_SESSION, null);
+    }
+
+    public void setSessionID() {
+        editor.putString(KEY_SESSION, UUID.randomUUID().toString());
+        editor.commit();
+    }
+    public void removeSessionID() {
+        editor.remove(KEY_SESSION);
+        editor.commit();
     }
 
     public void setImage(String base64) {

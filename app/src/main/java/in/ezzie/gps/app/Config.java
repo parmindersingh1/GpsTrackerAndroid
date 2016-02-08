@@ -3,6 +3,9 @@ package in.ezzie.gps.app;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,8 +28,8 @@ import in.ezzie.gps.helper.responseMessage;
  */
 public class Config {
     // server URL configuration
-     public static final String BASE_URL=  "http://192.168.1.2/gps";
-//    public static final String BASE_URL=  "http://mygpstracking.esy.es";
+     public static final String BASE_URL=  "http://192.168.1.12/gps/api";
+//    public static final String BASE_URL=  "http://mygpstracking.esy.es/api";
     public static final String URL_REQUEST_SMS = BASE_URL + "/request_sms.php";
     public static final String URL_VERIFY_OTP = BASE_URL + "/verify_otp.php";
     public static final String URL_SEND_LOCATION = BASE_URL + "/update_location.php";
@@ -52,6 +55,16 @@ public class Config {
     public final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 
 
+//    Then you can call Config.isConnected(this) or Config.isConnected(getActivity)
+    public static boolean isConnected(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+
+        return false;
+    }
 
 
     public static boolean isMyServiceRunning(Context context, Class<?> serviceClass) {
@@ -64,6 +77,18 @@ public class Config {
         return false;
     }
 
+    //    Then you can call Config.isGpsEnabled(this) or Config.isGpsEnabled(getActivity)
+    public static boolean isGpsEnabled(Context context){
+
+        LocationManager locManager = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
+
+        if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     public static responseMessage sendData(String url, MultiValueMap<String, String> params, String TAG){
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -82,18 +107,7 @@ public class Config {
         // Add the Jackson and String message converters
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        if(requestHeaders ==null){
-            return new responseMessage("request Header null");
-        }
-        if (requestEntity == null) {
-            return new responseMessage("request Entity null");
-        }
-        if (restTemplate == null) {
-            return new responseMessage("rest Template null");
-        }
-        if (restTemplate == null) {
-            return new responseMessage("rest Template null");
-        }
+
         try {
             // Make the network request, posting the message, expecting a String in response from the server
             ResponseEntity<responseMessage> response =  restTemplate.exchange(url, HttpMethod.POST, requestEntity,

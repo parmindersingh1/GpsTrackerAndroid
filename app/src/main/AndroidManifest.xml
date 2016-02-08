@@ -52,6 +52,13 @@
             android:exported="false" />
 
         <service android:name="in.ezzie.gps.service.BackgroundLocationService"/>
+
+        <receiver android:name=".receiver.InternetConnectionReceiver" >
+            <intent-filter>
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
