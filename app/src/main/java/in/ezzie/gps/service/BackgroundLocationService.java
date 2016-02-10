@@ -32,6 +32,7 @@ import java.util.TimeZone;
 
 import in.ezzie.gps.MainActivity;
 import in.ezzie.gps.app.Config;
+import in.ezzie.gps.helper.GPSDatabase;
 import in.ezzie.gps.helper.PrefManager;
 import in.ezzie.gps.helper.responseMessage;
 
@@ -195,6 +196,7 @@ public class BackgroundLocationService extends Service implements
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getDefault());
         Date date = new Date(location.getTime());
+        String gpsTime = dateFormat.format(date);
 
         HashMap<String, String> profile = pref.getUserDetails();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String,String>();
@@ -205,10 +207,21 @@ public class BackgroundLocationService extends Service implements
         params.add("event_type", Config.EVENT_TYPE);
         params.add("uuid", pref.getUUID());
         params.add("session_id",pref.getSessionID());
-        params.add("gpsTime", dateFormat.format(date));
+        params.add("gpsTime", gpsTime);
+        if(Config.isConnected(BackgroundLocationService.this)) {
+            new SendLocationTask(params).execute();
+        } else {
+            Log.i(TAG,"Saving Location to database");
+            updateDatabase(location, pref.getSessionID(),gpsTime);
+        }
 
-        new SendLocationTask(params).execute();
+    }
 
+    public  void updateDatabase(Location location, String session_id,String gpsTime){
+        GPSDatabase myDatabase=new GPSDatabase(BackgroundLocationService.this);
+        myDatabase.open();
+        myDatabase.insertRow(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()),session_id,gpsTime);
+        myDatabase.close();
     }
 
     private class SendLocationTask extends AsyncTask<Void,Void,responseMessage> {
@@ -219,11 +232,7 @@ public class BackgroundLocationService extends Service implements
         }
         @Override
         protected responseMessage doInBackground(Void... voids) {
-            if(Config.isConnected(BackgroundLocationService.this)) {
                 return Config.sendData(Config.URL_SEND_LOCATION, this.params, TAG);
-            } else{
-                return new responseMessage("Not Connected to Network");
-            }
         }
 
         @Override

@@ -7,10 +7,6 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,14 +24,14 @@ import in.ezzie.gps.helper.responseMessage;
  */
 public class Config {
     // server URL configuration
-     public static final String BASE_URL=  "http://192.168.1.12/gps/api";
+     public static final String BASE_URL=  "http://192.168.1.2/gps/api";
 //    public static final String BASE_URL=  "http://mygpstracking.esy.es/api";
     public static final String URL_REQUEST_SMS = BASE_URL + "/request_sms.php";
     public static final String URL_VERIFY_OTP = BASE_URL + "/verify_otp.php";
     public static final String URL_SEND_LOCATION = BASE_URL + "/update_location.php";
     public static final String URL_LOGOUT = BASE_URL + "/logout.php";
     public static final String URL_IMAGE_UPLOAD = BASE_URL + "/upload_image.php";
-
+    public static final String URL_LOCATIONS_UPLOAD = BASE_URL + "/upload_cached_locations.php";
     // SMS provider identification
     // It should match with your SMS gateway origin
     // You can use  MSGIND, TESTER and ALERTS as sender ID
