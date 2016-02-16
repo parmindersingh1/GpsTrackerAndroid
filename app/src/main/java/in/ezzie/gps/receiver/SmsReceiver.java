@@ -37,10 +37,6 @@ public class SmsReceiver extends BroadcastReceiver {
                     String senderAddress = currentMessage.getDisplayOriginatingAddress();
                     String message = currentMessage.getDisplayMessageBody();
 
-                    Toast.makeText(context,"Received SMS: " + message + ", Sender: " + senderAddress,Toast.LENGTH_LONG).show();
-
-                    Log.e(TAG, "Received SMS: " + message + ", Sender: " + senderAddress);
-
                     // if the SMS is not from our gateway, ignore the message
                     if (!senderAddress.toLowerCase().contains(Config.SMS_ORIGIN.toLowerCase())) {
                         return;
@@ -49,8 +45,7 @@ public class SmsReceiver extends BroadcastReceiver {
                     // verification code from sms
                     String verificationCode = getVerificationCode(message);
 
-                    Log.e(TAG, "OTP received: " + verificationCode);
-                    Toast.makeText(context,"OTP received: " + verificationCode,Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "OTP received: " + verificationCode);
 
                     Intent hhtpIntent = new Intent(context, HttpService.class);
                     hhtpIntent.putExtra("otp", verificationCode);

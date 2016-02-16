@@ -12,10 +12,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -43,7 +41,7 @@ public class BackgroundLocationService extends Service implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    protected static final String TAG = "BackgroundLocationService";
+    protected static final String TAG = BackgroundLocationService.class.getSimpleName();
 
     public static final String RESPONSE_LOC = "newLocation";
 
@@ -67,7 +65,6 @@ public class BackgroundLocationService extends Service implements
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i(TAG, "onCreate()");
         pref = new PrefManager(getApplicationContext());
         buildGoogleApiClient();
     }
@@ -83,12 +80,12 @@ public class BackgroundLocationService extends Service implements
         super.onStartCommand(intent, flags, startId);
 
         if (mGoogleApiClient.isConnected()) {
-            Log.i(TAG + " onStartCommand", "GoogleApiClient Connected");
+            Log.d(TAG + " onStartCommand", "GoogleApiClient Connected");
             return START_STICKY;
         }
 
         if (!mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting()) {
-            Log.i(TAG + " onStartCommand", "GoogleApiClient not Connected");
+            Log.e(TAG + " onStartCommand", "GoogleApiClient not Connected");
             mGoogleApiClient.connect();
         }
 
@@ -96,7 +93,6 @@ public class BackgroundLocationService extends Service implements
     }
 
     protected synchronized void buildGoogleApiClient() {
-        Log.i(TAG, "Building GoogleApiClient");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -106,7 +102,6 @@ public class BackgroundLocationService extends Service implements
     }
 
     protected void createLocationRequest() {
-        Log.i(TAG, "createLocationRequest()");
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
@@ -115,7 +110,7 @@ public class BackgroundLocationService extends Service implements
     }
 
     protected void startLocationUpdates() {
-        Log.i(TAG, "Started Location Updates");
+        Log.d(TAG, "Started Location Updates");
 
         //LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -125,15 +120,13 @@ public class BackgroundLocationService extends Service implements
     }
 
     protected void stopLocationUpdates() {
-        Log.i(TAG, "Stopped Location Updates");
+        Log.d(TAG, "Stopped Location Updates");
 
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Log.i(TAG, "Connected to GoogleApiClient");
-
         startLocationUpdates();
     }
 
@@ -142,7 +135,6 @@ public class BackgroundLocationService extends Service implements
      */
     @Override
     public void onLocationChanged(Location location) {
-        Log.i(TAG, "----onLocationChanged");
         if(location!= null) {
             sendLocationForMap(location);
             sendLocationToServer(location);
@@ -151,13 +143,12 @@ public class BackgroundLocationService extends Service implements
 
     @Override
     public void onConnectionSuspended(int cause) {
-        Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+        Log.e(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
 
@@ -211,7 +202,6 @@ public class BackgroundLocationService extends Service implements
         if(Config.isConnected(BackgroundLocationService.this)) {
             new SendLocationTask(params).execute();
         } else {
-            Log.i(TAG,"Saving Location to database");
             updateDatabase(location, pref.getSessionID(),gpsTime);
         }
 
@@ -238,7 +228,6 @@ public class BackgroundLocationService extends Service implements
         @Override
         protected void onPostExecute(responseMessage responseMsg) {
             super.onPostExecute(responseMsg);
-            Log.i(TAG,responseMsg.getMessage());
         }
     }
 

@@ -2,12 +2,10 @@ package in.ezzie.gps;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Message;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,18 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import in.ezzie.gps.app.Config;
 import in.ezzie.gps.helper.PrefManager;

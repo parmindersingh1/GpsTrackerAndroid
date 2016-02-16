@@ -24,8 +24,8 @@ import in.ezzie.gps.helper.responseMessage;
  */
 public class Config {
     // server URL configuration
-     public static final String BASE_URL=  "http://192.168.1.2/gps/api";
-//    public static final String BASE_URL=  "http://mygpstracking.esy.es/api";
+//     public static final String BASE_URL=  "http://192.168.1.2/gps/api";
+    public static final String BASE_URL=  "http://mygpstracking.esy.es/api";
     public static final String URL_REQUEST_SMS = BASE_URL + "/request_sms.php";
     public static final String URL_VERIFY_OTP = BASE_URL + "/verify_otp.php";
     public static final String URL_SEND_LOCATION = BASE_URL + "/update_location.php";
@@ -42,9 +42,9 @@ public class Config {
     public static final String OTP_DELIMITER = ":";
 
     // Location updates intervals in sec
-    public static int UPDATE_INTERVAL = 60 * 1000; // 1 min
-    public static int FATEST_INTERVAL = 60 * 500; // 5 sec
-    public static int DISPLACEMENT = 0; // 10 meters
+    public static int UPDATE_INTERVAL = 5 * 60 * 1000; // 5 min
+    public static int FATEST_INTERVAL = 4 * 60 * 1000; // 4 min
+    public static int DISPLACEMENT = 5; // 5 meters
     public static int ZOOMLEVEL = 13; // Map Zoom Level
 
 

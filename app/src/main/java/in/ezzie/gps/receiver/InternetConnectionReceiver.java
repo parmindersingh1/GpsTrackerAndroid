@@ -28,7 +28,7 @@ import in.ezzie.gps.helper.responseMessage;
  * Created by parminder on 8/2/16.
  */
 public class InternetConnectionReceiver  extends BroadcastReceiver {
-    private static final String TAG = "InternetConnectionReceiver";
+    private static final String TAG = InternetConnectionReceiver.class.getSimpleName();
     private PrefManager pref;
     protected GPSDatabase myDatabase;
     protected String json_string;
@@ -107,7 +107,7 @@ public class InternetConnectionReceiver  extends BroadcastReceiver {
                 myDatabase.deleteAll();
                 myDatabase.close();
             }
-            Log.i("InternetConnectionReceiver",responseMessage.getMessage());
+            Log.d("InternetConnectionReceiver",responseMessage.getMessage());
         }
     }
 }

@@ -12,7 +12,7 @@ import android.util.Log;
  * Created by parminder on 9/2/16.
  */
 public class GPSDatabase {
-    private static final String TAG = "GPSDatabase";
+    private static final String TAG = GPSDatabase.class.getSimpleName();
     private Context context;
     private DbHelper dbHelper;
     public final String DBNAME="gps1";
@@ -40,12 +40,12 @@ public class GPSDatabase {
         public void onCreate(SQLiteDatabase db) {
             // TODO Auto-generated method stub
             db.execSQL(CREATERDB);
-            Log.i(TAG,"DB Created Successfully");
+            Log.d(TAG,"DB Created Successfully");
         }
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             // TODO Auto-generated method stub
-            Log.i(TAG,"DB upgraded Successfully");
+            Log.d(TAG,"DB upgraded Successfully");
         }
     }
     public long insertRow(String latitude, String longitude, String session, String gpsTime){

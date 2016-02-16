@@ -15,7 +15,6 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,7 +35,7 @@ import in.ezzie.gps.helper.responseMessage;
 
 
 public class ImageUpload extends AppCompatActivity {
-    protected static final String TAG = "ImageUpload";
+    protected static final String TAG = ImageUpload.class.getSimpleName();
     protected static final int REQUEST_CAMERA = 1, SELECT_FILE = 2;
 
     private PrefManager pref;

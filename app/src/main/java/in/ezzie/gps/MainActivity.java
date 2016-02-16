@@ -162,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (location != null) {
                 Log.i("MyACTIVITY", "get current location" + String.valueOf(location.getLatitude()));
                 handleNewLocation(location);
-                Toast.makeText(MainActivity.this, "Location is- \n LAT: " + String.valueOf(location.getLatitude()) + "\n LONG: " + String.valueOf(location.getLongitude()), Toast.LENGTH_LONG).show();
             }
         } else {
             Toast.makeText(MainActivity.this, "Service is not running",Toast.LENGTH_SHORT).show();
@@ -362,7 +361,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         protected void onPostExecute(responseMessage responseMsg) {
             super.onPostExecute(responseMsg);
-            Toast.makeText(MainActivity.this,responseMsg.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -373,7 +371,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Location location = intent.getParcelableExtra(BackgroundLocationService.RESPONSE_LOC);
             Double responseLat = location.getLatitude();
             Double reponseLong = location.getLongitude();
-            Toast.makeText(MainActivity.this,"Location is- \n LAT: "+responseLat+"\n LONG: "+reponseLong,Toast.LENGTH_LONG).show();
             if(location!=null)
                 handleNewLocation(location);
         }
@@ -402,7 +399,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 finish();
             }
-            Toast.makeText(MainActivity.this,responseMsg.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 }
