@@ -36,6 +36,7 @@ public class PrefManager {
     private static final String KEY_UUID = "uuid";
     private static final String KEY_IMAGE = "uImage";
     private static final String KEY_SESSION = "uImage";
+    private static final String KEY_GCM_REGID = "regId";
 
     public PrefManager(Context context) {
         this._context = context;
@@ -59,6 +60,15 @@ public class PrefManager {
 
     public String getMobileNumber() {
         return pref.getString(KEY_MOBILE_NUMBER, null);
+    }
+
+    public void setKeyGcmRegid(String regId) {
+        editor.putString(KEY_GCM_REGID, regId);
+        editor.commit();
+    }
+
+    public String getKeyGcmRegid() {
+        return pref.getString(KEY_GCM_REGID, null);
     }
 
     public void setUUID(String uuid) {

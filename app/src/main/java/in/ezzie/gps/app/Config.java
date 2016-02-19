@@ -24,7 +24,7 @@ import in.ezzie.gps.helper.responseMessage;
  */
 public class Config {
     // server URL configuration
-//     public static final String BASE_URL=  "http://192.168.1.2/gps/api";
+//     public static final String BASE_URL=  "http://192.168.1.4/gps/api";
     public static final String BASE_URL=  "http://mygpstracking.esy.es/api";
     public static final String URL_REQUEST_SMS = BASE_URL + "/request_sms.php";
     public static final String URL_VERIFY_OTP = BASE_URL + "/verify_otp.php";
@@ -32,6 +32,7 @@ public class Config {
     public static final String URL_LOGOUT = BASE_URL + "/logout.php";
     public static final String URL_IMAGE_UPLOAD = BASE_URL + "/upload_image.php";
     public static final String URL_LOCATIONS_UPLOAD = BASE_URL + "/upload_cached_locations.php";
+    public static final String URL_GCM_REGISTER = BASE_URL + "/update_token.php";
     // SMS provider identification
     // It should match with your SMS gateway origin
     // You can use  MSGIND, TESTER and ALERTS as sender ID
@@ -44,7 +45,7 @@ public class Config {
     // Location updates intervals in sec
     public static int UPDATE_INTERVAL = 5 * 60 * 1000; // 5 min
     public static int FATEST_INTERVAL = 4 * 60 * 1000; // 4 min
-    public static int DISPLACEMENT = 5; // 5 meters
+    public static int DISPLACEMENT = 10; // 10 meters
     public static int ZOOMLEVEL = 13; // Map Zoom Level
 
 
@@ -87,6 +88,7 @@ public class Config {
     }
 
     public static responseMessage sendData(String url, MultiValueMap<String, String> params, String TAG){
+        Log.i(TAG,url);
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.set("Connection", "Close");
 

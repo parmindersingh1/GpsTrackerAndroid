@@ -23,4 +23,6 @@
     <string name="btn_stop_location_updates">STOP LOCATION UPDATES</string>
 
     <string name="google_app_id">AIzaSyCnpWw5TmZwcJFhX4scp8MwNVlSY5pCpDc</string>
+
+    <string name="gcm_sender_id">513982478500</string>
 </resources>

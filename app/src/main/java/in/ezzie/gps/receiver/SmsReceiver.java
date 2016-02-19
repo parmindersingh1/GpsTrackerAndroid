@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.widget.Toast;
 
 import in.ezzie.gps.app.Config;
 import in.ezzie.gps.service.HttpService;
@@ -20,7 +19,6 @@ public class SmsReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context,"Message Recieved",Toast.LENGTH_SHORT).show();
         final Bundle bundle = intent.getExtras();
         try {
             if (bundle != null) {
